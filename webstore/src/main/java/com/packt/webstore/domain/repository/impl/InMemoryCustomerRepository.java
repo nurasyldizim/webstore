@@ -18,14 +18,16 @@ import com.packt.webstore.domain.repository.CustomerRepository;
 public class InMemoryCustomerRepository implements CustomerRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
-	
+
+	@Override
 	public List<Customer> getAllCustomers() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		List<Customer> result = jdbcTemplate.query("SELECT * FROM CUSTOMERS", params, new CustomerMapper());
 		return result;
 	}
-	
+
 	private static final class CustomerMapper implements RowMapper<Customer> {
+		@Override
 		public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Customer customer = new Customer();
 			customer.setCustomerId(rs.getString("ID"));

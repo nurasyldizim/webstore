@@ -88,9 +88,11 @@ public class ProductController {
 		String rootDirectory = request.getSession().getServletContext().getRealPath("/");
 		if (productImage != null && !productImage.isEmpty()) {
 			try {
-				productImage.transferTo(new File("C:\\Users\\n.dizimov\\git\\repository\\webstore\\webstore\\src\\main\\webapp\\WEB-INF\\resources\\images/" + newProduct.getProductId() + ".png"));
+				productImage.transferTo(new File(
+						"C:\\Users\\n.dizimov\\git\\repository\\webstore\\webstore\\src\\main\\webapp\\WEB-INF\\resources\\images/"
+								+ newProduct.getProductId() + ".png"));
 			} catch (Exception e) {
-				throw new RuntimeException("Product Image savingfailed", e);
+				throw new RuntimeException("Product Image saving failed", e);
 			}
 		}
 		productService.addProduct(newProduct);

@@ -18,7 +18,7 @@ public class Product implements Serializable {
 	private boolean discontinued;
 	private String condition;
 	private MultipartFile productImage;
-	
+
 	public MultipartFile getProductImage() {
 		return productImage;
 	}

@@ -17,12 +17,14 @@ public class InMemoryProductRepository implements ProductRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
+	@Override
 	public List<Product> getAllProducts() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		List<Product> result = jdbcTemplate.query("SELECT * FROM products", params, new ProductMapper());
 		return result;
 	}
 
+	@Override
 	public void updateStock(String productId, long noOfUnits) {
 		String SQL = "UPDATE PRODUCTS SET UNITS_IN_STOCK = :unitsInStock WHERE ID = :id";
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -31,6 +33,7 @@ public class InMemoryProductRepository implements ProductRepository {
 		jdbcTemplate.update(SQL, params);
 	}
 
+	@Override
 	public List<Product> getProductsByCategory(String category) {
 		String SQL = "SELECT * FROM PRODUCTS WHERE CATEGORY =:category";
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -38,11 +41,13 @@ public class InMemoryProductRepository implements ProductRepository {
 		return jdbcTemplate.query(SQL, params, new ProductMapper());
 	}
 
+	@Override
 	public List<Product> getProductsByFilter(Map<String, List<String>> filterParams) {
 		String SQL = "SELECT * FROM PRODUCTS WHERE CATEGORY IN (:categories ) AND MANUFACTURER IN ( :brands)";
 		return jdbcTemplate.query(SQL, filterParams, new ProductMapper());
 	}
 
+	@Override
 	public Product getProductById(String productID) {
 		String SQL = "SELECT * FROM PRODUCTS WHERE ID = :id";
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -50,6 +55,7 @@ public class InMemoryProductRepository implements ProductRepository {
 		return jdbcTemplate.queryForObject(SQL, params, new ProductMapper());
 	}
 
+	@Override
 	public List<Product> getFilterProducts(String category, String brand, String low, String high) {
 		String SQL = "SELECT * FROM PRODUCTS WHERE CATEGORY = :category AND MANUFACTURER = :brand AND UNIT_PRICE > :low AND UNIT_PRICE < :high";
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -60,6 +66,7 @@ public class InMemoryProductRepository implements ProductRepository {
 		return jdbcTemplate.query(SQL, params, new ProductMapper());
 	}
 
+	@Override
 	public void addProduct(Product product) {
 		String SQL = "INSERT INTO PRODUCTS (ID, " + "NAME," + "DESCRIPTION," + "UNIT_PRICE," + "MANUFACTURER,"
 				+ "CATEGORY," + "CONDITION," + "UNITS_IN_STOCK," + "UNITS_IN_ORDER," + "DISCONTINUED) "
@@ -79,6 +86,7 @@ public class InMemoryProductRepository implements ProductRepository {
 	}
 
 	private static final class ProductMapper implements RowMapper<Product> {
+		@Override
 		public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Product product = new Product();
 			product.setProductId(rs.getString("ID"));
